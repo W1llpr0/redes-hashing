@@ -4,6 +4,7 @@
 #include <cmath> 
 #include <string> 
 #include <map> 
+#include <sstream> 
 using namespace std;
 #include "funciones.h"
 
@@ -81,7 +82,7 @@ vector<string>  hashearvalorInicial(){
     diccionarioPrimos[1] = "BB67AE85";
     diccionarioPrimos[2] = "3C6EF372";
     diccionarioPrimos[3] = "A54FF53A";
-    diccionarioPrimos[4] = "5103527F";
+    diccionarioPrimos[4] = "510E527F";
     diccionarioPrimos[5] = "9B05688C";
     diccionarioPrimos[6] = "1F83D9AB";
     diccionarioPrimos[7] = "5BE0CD19";
@@ -277,14 +278,194 @@ vector<string> funcionW(vector<string> numprincipal){
 
 }
 
+string choose( string num1, string num2, string num3){
+    string final;
+    for(int i=0; i< 32; i++){
+
+        char choose = num1[i];
+        char valoractual1 = num2[i];
+        char valoractual2 = num3[i];
+
+        int valorabuscar = choose - '0';
+        int valoranum1 = valoractual1 - '0';
+        int valoranum2 = valoractual2 - '0';
+        
+        if (valorabuscar == 1){
+            bitset<1>bits(valoranum1);
+            final += bits.to_string();
+        }
+        else {
+            bitset<1>bits(valoranum2);
+            final += bits.to_string();
+        }
+
+    }
+    return final;
+
+}
+
+string mayority ( string num1, string num2, string num3){
+
+    string final;
+    for(int i=0; i< 32; i++){
+
+        char valoractual1 = num1[i];
+        char valoractual2 = num2[i];
+        char valoractual3 = num3[i];
+
+        int numero1 = valoractual1 - '0';
+        int numero2 = valoractual2 - '0';
+        int numero3 = valoractual3 - '0';
+        
+        if ((numero1 + numero2 + numero3 == 3) || (numero1 + numero2 + numero3 == 2)){
+            bitset<1>bits(1);
+            final += bits.to_string();
+        }
+        else {
+            bitset<1>bits(0);
+            final += bits.to_string();
+        }
+
+    }
+    return final;
+
+
+}
+
+
+string funcionT(int tnum, vector<string> letras, vector<string> klista, vector<string> wlista ){
+
+    switch (tnum)
+    {
+    case 2 :{
+        string t2final;
+        string a = letras[0];
+        string b = letras[1];
+        string c = letras[2];
+        
+        string rotr2 = funcionROTR(a, 2);
+        string rotr13 = funcionROTR(a, 13);
+        string rotr22 = funcionROTR(a, 22);
+        unsigned int ROTR2 = stoul (rotr2, nullptr, 2);
+        unsigned int ROTR13 = stoul (rotr13, nullptr, 2);
+        unsigned int ROTR22 = stoul (rotr22, nullptr, 2);
+        string mayorvalor = mayority(a,b,c);
+        unsigned int MAYOR = stoul (mayorvalor, nullptr, 2);
+
+        bitset <32> bitsfinales (((((ROTR2^ROTR13)^ROTR22))% (1ULL <<32))+MAYOR); 
+        t2final = bitsfinales.to_string();
+
+        return t2final;
+    }
+    
+    case 1 :{
+        string t1final;
+        string e = letras[4];
+        string f = letras[5];
+        string g = letras[6];
+        string h = letras[7];
+
+        string k0 = klista[0];
+        string w0 = wlista[0];
+        
+        string rotr6 = funcionROTR(e, 6);
+        string rotr11 = funcionROTR(e, 11);
+        string rotr25 = funcionROTR(e, 25);
+         unsigned int E = stoul (e, nullptr, 2);
+        unsigned int H = stoul (h, nullptr, 2);
+        unsigned int K0 = stoul (k0, nullptr, 2);
+        unsigned int W0 = stoul (w0, nullptr, 2);
+        unsigned int ROTR6 = stoul (rotr6, nullptr, 2);
+        unsigned int ROTR11 = stoul (rotr11, nullptr, 2);
+        unsigned int ROTR25 = stoul (rotr25, nullptr, 2);
+        string choosevalor = choose(e,f,g);
+        unsigned int CHOOSE = stoul (choosevalor, nullptr, 2);
+
+        bitset <32> bitsfinales ((((( H+(((ROTR6^ROTR11)^ROTR25) % (1ULL <<32)))+CHOOSE))+K0)+W0); 
+      
+        t1final = bitsfinales.to_string();
+
+        return t1final;
+
+    }
+
+    default:
+        return "gabriel se la come";
+    }
+
+}
+
+vector<string> creandoH(vector<string> letras, vector<string> klista, vector<string> wlista ){
+
+    vector<string> listafinal(8);
+    string t1 = funcionT(1, letras, klista, wlista);
+    unsigned int T1 = stoul(t1,nullptr,2);
+    string t2 = funcionT(2, letras, klista, wlista);
+    unsigned int T2 = stoul(t2,nullptr,2);
+    bitset<32> bits1 (T1+T2);
+    string convertirb1 = bits1.to_string();
+    listafinal[0] = convertirb1;
+    listafinal[1] = letras[0];
+    listafinal[2] = letras[1];
+    listafinal[3] = letras[2]; 
+    string d = letras[3];
+    unsigned int D = stoul(d,nullptr,2);
+    bitset<32> bits2 (T1+D);
+    string convertirb2 = bits2.to_string();
+    listafinal[4] = convertirb2;
+    listafinal[5] =letras[4];
+    listafinal[6] = letras[5];
+    listafinal[7] =letras[6];
+
+    return listafinal;
+
+}
+
+string SHA256(vector<string> principal, vector<string> letras){
+
+    string final;
+    vector<string> listaSHA256(8);
+
+    for(int i=0; i<8; i++){
+        
+        string listap = principal[i];
+        unsigned int LISTAP = stoul(listap,nullptr,2);
+        string listal = letras[i];
+        unsigned int LISTAL = stoul(listal,nullptr,2);
+        bitset<32> bits (LISTAL+LISTAP);
+
+
+        listaSHA256[i] = bits.to_string();
+        final += listaSHA256[i];
+
+
+    }
+    return final;
+
+}
+
+string SHA256HEX (string num){
+
+    stringstream ss;
+
+    for (int i = 0; i<num.length() ; i+=4){
+        string partestring = num.substr(i,4);
+        bitset <4> bits(partestring);
+        ss << hex << bits.to_ulong();
+    }
+    return ss.str();
+
+
+}
 
 
 
-void mostrar(vector<string> ar){
+
+void mostrar(vector<string>  ar){
 
     for( auto str : ar){
 
-        cout<< str<< '\n'; 
+        cout<< str; 
 
     }
 

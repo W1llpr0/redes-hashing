@@ -4,6 +4,8 @@
         "iostream": "cpp",
         "bitset": "cpp",
         "random": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "vector": "cpp",
+        "string": "cpp"
     }
 }
