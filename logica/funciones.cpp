@@ -253,16 +253,27 @@ vector<string> funcionHash(vector<string> numprincipal){
 
     
     vector<string> procesandoMensaje(64);
-    for(int i=0;i<15;i++){
+    for(int i=0;i<16;i++){
 
         procesandoMensaje[i] = numprincipal[i];
 
     }
 
-    for(int i=15;i<64;i++){
+    for(int i=16;i<64;i++){
+        string sigma1 = funcionSigma(procesandoMensaje[i-2],1);
+        string sigma0 = funcionSigma(procesandoMensaje[i-15],0);
+        string w7 = procesandoMensaje[i-7];
+        string w16 = procesandoMensaje[i-16];
+
+        unsigned int SIGMA1 = stoul(sigma1, nullptr, 2);
+        unsigned int SIGMA0 = stoul(sigma0, nullptr, 2);
+        unsigned int W7 = stoul(w7, nullptr, 2);
+        unsigned int W16 = stoul(w16, nullptr, 2);
+
+        procesandoMensaje[i] = (((SIGMA1 | W7) | SIGMA0) | W16);
 
     }
-
+    return procesandoMensaje;
 
 }
 
@@ -271,7 +282,7 @@ void mostrar(vector<string> ar){
 
     for( auto str : ar){
 
-        cout<< str<< '\n';
+        cout<< str<< '\n'; 
 
     }
 

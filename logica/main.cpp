@@ -1,15 +1,18 @@
 #include <iostream>
 using namespace std;
 #include "funciones.h"
+#include <string>
+#include <vector>
 
 int main () {
 
    
     string n;
-    int num;
-    cin >> n >> num;
+    cin >> n;
 
-    cout << funcionSigma(n, num);
+    vector<string> listap = numerobinarioIncial(palabraPadeada(convertirASCII(n)));
+
+    mostrar(funcionHash(listap));
 
 
     return 0;
