@@ -6,7 +6,7 @@ int main () {
 
    
 
-    mostrar(hashearvalorInicial());
+    mostrar(constantesHashing());
 
 
     return 0;
