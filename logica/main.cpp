@@ -5,8 +5,11 @@ using namespace std;
 int main () {
 
    
+    string n;
+    int num;
+    cin >> n >> num;
 
-    mostrar(constantesHashing());
+    cout << funcionSigma(n, num);
 
 
     return 0;

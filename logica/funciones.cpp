@@ -33,7 +33,7 @@ string palabraPadeada(string a){
 }
 
 
-vector<string> agrupacion16(string a){
+vector<string> numerobinarioIncial(string a){
    
     vector<string> lista(16);
 
@@ -187,6 +187,85 @@ vector<string>  constantesHashing(){
     return lista;
 
 }
+
+
+
+string funcionROTR(string num, int rotr){
+    string final;
+    unsigned int numero = stoul(num, nullptr, 2);
+    unsigned int nume = (numero >> rotr)| (numero << (32-rotr));
+    bitset<32> bits(nume);
+    final = bits.to_string();
+    return final;
+}
+
+string funcionShift(string num, int shift){
+    string rotr = funcionROTR(num,3);
+    for (int i=0; i<3; i++){
+        rotr[i]='0';
+    }
+    return rotr;
+}
+
+string funcionSigma (string num, int sigma){
+
+    switch (sigma)
+    {
+    case 0:{
+
+        string final;
+        string rotr7 = funcionROTR(num, 7);
+        string rotr18 = funcionROTR(num, 18);
+        string shift3 = funcionShift(num, 3);
+
+        unsigned int ROTR7 = stoul(rotr7, nullptr, 2);
+        unsigned int ROTR18 = stoul(rotr18, nullptr, 2);
+        unsigned int SHIFT3 = stoul(shift3, nullptr, 2);
+
+        unsigned int SIGMA0 = (ROTR7 ^ ROTR18) ^ SHIFT3;
+        bitset<32> bitssigma(SIGMA0);
+        final = bitssigma.to_string();
+        return final;
+
+    }    
+    case 1:{
+        string final;
+        string rotr17 = funcionROTR(num, 7);
+        string rotr19 = funcionROTR(num, 18);
+        string shift10 = funcionShift(num, 3);
+
+        unsigned int ROTR7 = stoul(rotr17, nullptr, 2);
+        unsigned int ROTR18 = stoul(rotr19, nullptr, 2);
+        unsigned int SHIFT10 = stoul(shift10, nullptr, 2);
+
+        unsigned int SIGMA1 = (ROTR7 ^ ROTR18) ^ SHIFT10;
+        bitset<32> bitssigma(SIGMA1);
+        final = bitssigma.to_string();
+        return final;
+    }     
+        
+    default:
+        return "numero ingresado invalido";
+    }  
+}
+
+vector<string> funcionHash(vector<string> numprincipal){
+
+    
+    vector<string> procesandoMensaje(64);
+    for(int i=0;i<15;i++){
+
+        procesandoMensaje[i] = numprincipal[i];
+
+    }
+
+    for(int i=15;i<64;i++){
+
+    }
+
+
+}
+
 
 void mostrar(vector<string> ar){
 
