@@ -249,7 +249,7 @@ string funcionSigma (string num, int sigma){
     }  
 }
 
-vector<string> funcionHash(vector<string> numprincipal){
+vector<string> funcionW(vector<string> numprincipal){
 
     
     vector<string> procesandoMensaje(64);
@@ -269,13 +269,15 @@ vector<string> funcionHash(vector<string> numprincipal){
         unsigned int SIGMA0 = stoul(sigma0, nullptr, 2);
         unsigned int W7 = stoul(w7, nullptr, 2);
         unsigned int W16 = stoul(w16, nullptr, 2);
-
-        procesandoMensaje[i] = (((SIGMA1 | W7) | SIGMA0) | W16);
+        bitset<32> bits (((((SIGMA1 + W7) + SIGMA0) + W16)) % (1ULL << 32));
+        procesandoMensaje[i] = bits.to_string();
 
     }
     return procesandoMensaje;
 
 }
+
+
 
 
 void mostrar(vector<string> ar){
