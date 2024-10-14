@@ -4,12 +4,9 @@ using namespace std;
 
 int main () {
 
-    string a;
+   
 
-    cin >> a;
-
-    cout << convertirASCII(a);
-    cout << palabraPadeada(convertirASCII(a));
+    mostrar(hashearvalorInicial());
 
 
     return 0;
