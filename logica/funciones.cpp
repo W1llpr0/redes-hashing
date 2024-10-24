@@ -23,13 +23,29 @@ string convertirASCII( string a ){
 }
 
 string palabraPadeada(string a){
-
     string final;
-    int cantidad = 448 - (a.length() +1);
-    string ceros(cantidad,'0');
-    bitset<64> bitdebloqueo(a.length());
-    final = a +'1' + ceros +bitdebloqueo.to_string();
+    if (a.length() < 448){
+        
+        int cantidad = 512 - 64 -1 - a.length();
+        string ceros(cantidad,'0');
+        bitset<64> bitdebloqueo(a.length());
+        final = a +'1' + ceros +bitdebloqueo.to_string();
+        
+    }
+    else{
+
+        
+        int cantidad = 1024 - 64 -1 - a.length();
+        string ceros(cantidad,'0');
+        bitset<64> bitdebloqueo(a.length());
+        final = a +'1' + ceros +bitdebloqueo.to_string();
+
+
+
+
+    }
     return final;
+    
 
 }
 
@@ -201,8 +217,8 @@ string funcionROTR(string num, int rotr){
 }
 
 string funcionShift(string num, int shift){
-    string rotr = funcionROTR(num,3);
-    for (int i=0; i<3; i++){
+    string rotr = funcionROTR(num,shift);
+    for (int i=0; i<shift; i++){
         rotr[i]='0';
     }
     return rotr;
@@ -218,30 +234,32 @@ string funcionSigma (string num, int sigma){
         string rotr7 = funcionROTR(num, 7);
         string rotr18 = funcionROTR(num, 18);
         string shift3 = funcionShift(num, 3);
-
-        unsigned int ROTR7 = stoul(rotr7, nullptr, 2);
-        unsigned int ROTR18 = stoul(rotr18, nullptr, 2);
-        unsigned int SHIFT3 = stoul(shift3, nullptr, 2);
-
-        unsigned int SIGMA0 = (ROTR7 ^ ROTR18) ^ SHIFT3;
-        bitset<32> bitssigma(SIGMA0);
-        final = bitssigma.to_string();
+        final = verificar(rotr7,rotr18,shift3);
         return final;
 
     }    
     case 1:{
         string final;
-        string rotr17 = funcionROTR(num, 7);
-        string rotr19 = funcionROTR(num, 18);
-        string shift10 = funcionShift(num, 3);
-
-        unsigned int ROTR7 = stoul(rotr17, nullptr, 2);
-        unsigned int ROTR18 = stoul(rotr19, nullptr, 2);
-        unsigned int SHIFT10 = stoul(shift10, nullptr, 2);
-
-        unsigned int SIGMA1 = (ROTR7 ^ ROTR18) ^ SHIFT10;
-        bitset<32> bitssigma(SIGMA1);
-        final = bitssigma.to_string();
+        string rotr17 = funcionROTR(num, 17);
+        string rotr19 = funcionROTR(num, 19);
+        string shift10 = funcionShift(num, 10);
+        final = verificar(rotr17,rotr19,shift10);
+        return final;
+    }
+    case 2:{
+        string final;
+        string rotr6 = funcionROTR(num, 6);
+        string rotr11 = funcionROTR(num, 11);
+        string rotr25 = funcionROTR(num, 25);
+        final = verificar(rotr6,rotr11,rotr25);
+        return final;
+    }
+    case 3:{
+        string final;
+        string rotr2 = funcionROTR(num, 2);
+        string rotr13 = funcionROTR(num, 13);
+        string rotr22 = funcionROTR(num, 22);
+        final = verificar(rotr2,rotr13,rotr22);
         return final;
     }     
         
@@ -270,7 +288,7 @@ vector<string> funcionW(vector<string> numprincipal){
         unsigned int SIGMA0 = stoul(sigma0, nullptr, 2);
         unsigned int W7 = stoul(w7, nullptr, 2);
         unsigned int W16 = stoul(w16, nullptr, 2);
-        bitset<32> bits (((((SIGMA1 + W7) + SIGMA0) + W16)) % (1ULL << 32));
+        bitset<32> bits ((((SIGMA1 + W7) + SIGMA0) + W16));
         procesandoMensaje[i] = bits.to_string();
 
     }
@@ -333,7 +351,7 @@ string mayority ( string num1, string num2, string num3){
 }
 
 
-string funcionT(int tnum, vector<string> letras, vector<string> klista, vector<string> wlista ){
+string funcionT(int tnum, vector<string> letras, vector<string> klista, vector<string> wlista, int cont ){
 
     switch (tnum)
     {
@@ -342,17 +360,12 @@ string funcionT(int tnum, vector<string> letras, vector<string> klista, vector<s
         string a = letras[0];
         string b = letras[1];
         string c = letras[2];
-        
-        string rotr2 = funcionROTR(a, 2);
-        string rotr13 = funcionROTR(a, 13);
-        string rotr22 = funcionROTR(a, 22);
-        unsigned int ROTR2 = stoul (rotr2, nullptr, 2);
-        unsigned int ROTR13 = stoul (rotr13, nullptr, 2);
-        unsigned int ROTR22 = stoul (rotr22, nullptr, 2);
+        string s0 = funcionSigma(a,3);
+        unsigned int S0 = stoul (s0, nullptr, 2);
         string mayorvalor = mayority(a,b,c);
         unsigned int MAYOR = stoul (mayorvalor, nullptr, 2);
 
-        bitset <32> bitsfinales (((((ROTR2^ROTR13)^ROTR22))% (1ULL <<32))+MAYOR); 
+        bitset <32> bitsfinales ((S0+MAYOR)& 0xFFFFFFFF); 
         t2final = bitsfinales.to_string();
 
         return t2final;
@@ -365,23 +378,21 @@ string funcionT(int tnum, vector<string> letras, vector<string> klista, vector<s
         string g = letras[6];
         string h = letras[7];
 
-        string k0 = klista[0];
-        string w0 = wlista[0];
+        string k0 = klista[cont];
+        string w0 = wlista[cont];
         
         string rotr6 = funcionROTR(e, 6);
         string rotr11 = funcionROTR(e, 11);
         string rotr25 = funcionROTR(e, 25);
-         unsigned int E = stoul (e, nullptr, 2);
+        string s0 = funcionSigma(e,2);
+        unsigned int S0 = stoul (s0, nullptr, 2);
         unsigned int H = stoul (h, nullptr, 2);
         unsigned int K0 = stoul (k0, nullptr, 2);
         unsigned int W0 = stoul (w0, nullptr, 2);
-        unsigned int ROTR6 = stoul (rotr6, nullptr, 2);
-        unsigned int ROTR11 = stoul (rotr11, nullptr, 2);
-        unsigned int ROTR25 = stoul (rotr25, nullptr, 2);
         string choosevalor = choose(e,f,g);
         unsigned int CHOOSE = stoul (choosevalor, nullptr, 2);
 
-        bitset <32> bitsfinales ((((( H+(((ROTR6^ROTR11)^ROTR25) % (1ULL <<32)))+CHOOSE))+K0)+W0); 
+        bitset <32> bitsfinales ((((( H+(S0)+CHOOSE))+K0)+W0)& 0xFFFFFFFF); 
       
         t1final = bitsfinales.to_string();
 
@@ -395,33 +406,102 @@ string funcionT(int tnum, vector<string> letras, vector<string> klista, vector<s
 
 }
 
-vector<string> creandoH(vector<string> letras, vector<string> klista, vector<string> wlista ){
+vector<string> creandoH(vector<string> letras, vector<string> klista, vector<string> wlista){
 
-    vector<string> listafinal(8);
-    string t1 = funcionT(1, letras, klista, wlista);
-    unsigned int T1 = stoul(t1,nullptr,2);
-    string t2 = funcionT(2, letras, klista, wlista);
-    unsigned int T2 = stoul(t2,nullptr,2);
-    bitset<32> bits1 (T1+T2);
-    string convertirb1 = bits1.to_string();
-    listafinal[0] = convertirb1;
-    listafinal[1] = letras[0];
-    listafinal[2] = letras[1];
-    listafinal[3] = letras[2]; 
-    string d = letras[3];
-    unsigned int D = stoul(d,nullptr,2);
-    bitset<32> bits2 (T1+D);
-    string convertirb2 = bits2.to_string();
-    listafinal[4] = convertirb2;
-    listafinal[5] =letras[4];
-    listafinal[6] = letras[5];
-    listafinal[7] =letras[6];
+    vector<string> listainicial (8);
+    vector<string> listafinal (8);
+    
+
+
+    for (int i = 0; i<8; i++){
+
+        vector<string> listaaux1 (8);
+        vector<string> listaaux2 (8);
+        listaaux1 = combinaciones1(letras,1);
+        vector<string> aux1 = listaaux1;
+        listaaux2 = combinaciones1(listaaux1,2);
+        listainicial = combinaciones2(aux1, klista, wlista,i);
+
+    }
+    int conta = 8;
+    for (int i = 0; i<7; i++){
+        
+        
+        for (int j = 0; j<8; j++){
+            vector<string> listaaux1 (8);
+            vector<string> listaaux2 (8);
+            listaaux1 = combinaciones1(listainicial,1);
+            vector<string> aux1 = listaaux1;
+            listaaux2 = combinaciones1(listaaux1,2);
+            listainicial = combinaciones2(aux1, klista, wlista,conta);
+            conta++;
+        }
+        
+
+        
+    }
+
+    listafinal = listainicial;
 
     return listafinal;
 
 }
 
-string SHA256(vector<string> principal, vector<string> letras){
+vector<string> combinaciones1 (vector<string> lp, int comb){
+
+    vector<string> lista(8);
+    switch (comb)
+    {
+    case 1: {    
+        for(int i=0 ; i<lista.size(); i++){
+
+            lista[i] = lp[i];
+        }
+        return lista;
+    }
+
+    case 2: {
+
+        lista = desplazarVector(lp);
+
+        return lista;
+        
+    }
+
+    default:
+        return lista;
+    }
+}
+
+vector<string> combinaciones2 (vector<string> lp, vector<string> klista, vector<string> wlista,int conta){
+    vector<string> lista(8);
+        for(int i=0 ; i<lista.size(); i++){
+            string t1 = funcionT(1, lp, klista, wlista,conta);
+            unsigned int T1 = stoul(t1,nullptr,2);
+            string t2 = funcionT(2, lp, klista, wlista,conta);
+            unsigned int T2 = stoul(t2,nullptr,2);
+            bitset<32> bits1 ((T1+T2)& 0xFFFFFFFF);
+            string convertirb1 = bits1.to_string();
+            lista[0] = convertirb1;
+            lista[1] = lp[1];
+            lista[2] = lp[2];
+            lista[3] = lp[3];
+            string aux = lp[4];
+            unsigned int AUX = stoul(aux,nullptr,2);
+            bitset<32> bits2 ((T1+AUX)& 0xFFFFFFFF);
+            string convertirb2 = bits2.to_string();
+            lista[4] = convertirb2;
+            lista[5] = lp[5];
+            lista[6] = lp[6];
+            lista[7] = lp[7];
+        }
+    return lista;
+    
+  
+}
+
+
+string SHA256vector(vector<string> principal, vector<string> letras){
 
     string final;
     vector<string> listaSHA256(8);
@@ -458,6 +538,20 @@ string SHA256HEX (string num){
 
 }
 
+string SHA256(string palabra){
+    vector<string> listaW = funcionW(numerobinarioIncial(palabraPadeada(convertirASCII(palabra))));
+    vector<string> listaK = constantesHashing();
+    vector<string> listaL = hashearvalorInicial();
+    vector<string> creacionH= creandoH(listaL,listaK,listaW);
+    string sha256= SHA256vector(listaL, creacionH);
+    string hex =SHA256HEX(sha256);
+
+    return hex;
+    
+
+
+}
+
 
 
 
@@ -465,9 +559,50 @@ void mostrar(vector<string>  ar){
 
     for( auto str : ar){
 
-        cout<< str; 
+        cout<< str << '\n'; 
 
     }
 
+
+}
+
+vector<string> desplazarVector(const vector<string>& original) {
+    
+    vector<string> nuevo(original.size());
+
+    nuevo[0] = original[0];
+
+    for (size_t i = 1; i < original.size(); i++) {
+        nuevo[i] = original[i - 1];
+    }
+
+    return nuevo; 
+}
+
+
+
+string verificar( string num1, string num2, string num3){
+    string final;
+    for(int i=0; i< 32; i++){
+
+        char r1 = num1[i];
+        char r2 = num2[i];
+        char r3 = num3[i];
+
+        int valorabuscar = r1 - '0';
+        int valoranum1 = r2 - '0';
+        int valoranum2 = r3 - '0';
+        
+        if ((valorabuscar+valoranum1+valoranum2) % 2 == 0){
+            bitset<1>bits(0);
+            final += bits.to_string();
+        }
+        else {
+            bitset<1>bits(1);
+            final += bits.to_string();
+        }
+
+    }
+    return final;
 
 }

@@ -9,15 +9,14 @@ using namespace std;
 
 int main () {
 
-    string n1;
+    string palabra;
     cout << "ingrese un numero para realizar el SHA256: " << '\n';
-    cin>> n1;
-    vector<string> listaW = funcionW(numerobinarioIncial(palabraPadeada(convertirASCII(n1))));
+    cin>> palabra;
+    vector<string> listaW = funcionW(numerobinarioIncial(palabraPadeada(convertirASCII(palabra))));
     vector<string> listaK = constantesHashing();
     vector<string> listaL = hashearvalorInicial();
     vector<string> creacionH= creandoH(listaL,listaK,listaW);
-    string sha256= SHA256(listaL, creacionH);
-    cout << SHA256HEX(sha256);
+    mostrar (creacionH);
 
     
 
