@@ -19,8 +19,6 @@ string verificar( string num1, string num2, string num3);
 string funcionT(int tnum, vector<string> letras, vector<string> klista, vector<string> wlista, int conta);
 vector<string> creandoH( vector<string> letras, vector<string> klista, vector<string> wlista);
 string SHA256vector(vector<string> principal, vector<string> letras);
-vector<string> combinaciones1 (vector<string> lp, int comb);
-vector<string> combinaciones2 (vector<string> lp, vector<string> klista, vector<string> wlista, int conta);
 string SHA256HEX (string num);
 string SHA256(string palabra);
 vector<string> desplazarVector(const vector<string>& original);

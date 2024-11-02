@@ -94,14 +94,14 @@ vector<string>  hashearvalorInicial(){
 
     vector<string> lista(8);
     map<int, string> diccionarioPrimos;
-    diccionarioPrimos[0] = "6A09E667";
-    diccionarioPrimos[1] = "BB67AE85";
-    diccionarioPrimos[2] = "3C6EF372";
-    diccionarioPrimos[3] = "A54FF53A";
-    diccionarioPrimos[4] = "510E527F";
-    diccionarioPrimos[5] = "9B05688C";
-    diccionarioPrimos[6] = "1F83D9AB";
-    diccionarioPrimos[7] = "5BE0CD19";
+    diccionarioPrimos[0] = "6a09e667";
+    diccionarioPrimos[1] = "bb67ae85";
+    diccionarioPrimos[2] = "3c6ef372";
+    diccionarioPrimos[3] = "a54ff53a";
+    diccionarioPrimos[4] = "510e527f";
+    diccionarioPrimos[5] = "9b05688c";
+    diccionarioPrimos[6] = "1f83d9Ab";
+    diccionarioPrimos[7] = "5be0cd19";
     for (int i = 0; i< lista.size(); i++){
         string cadena;
         string num = diccionarioPrimos[i];
@@ -365,8 +365,10 @@ string funcionT(int tnum, vector<string> letras, vector<string> klista, vector<s
         string mayorvalor = mayority(a,b,c);
         unsigned int MAYOR = stoul (mayorvalor, nullptr, 2);
 
-        bitset <32> bitsfinales ((S0+MAYOR)& 0xFFFFFFFF); 
+        bitset <32> bitsfinales ((S0 + MAYOR) & 0xFFFFFFFF); 
         t2final = bitsfinales.to_string();
+
+        
 
         return t2final;
     }
@@ -380,10 +382,6 @@ string funcionT(int tnum, vector<string> letras, vector<string> klista, vector<s
 
         string k0 = klista[cont];
         string w0 = wlista[cont];
-        
-        string rotr6 = funcionROTR(e, 6);
-        string rotr11 = funcionROTR(e, 11);
-        string rotr25 = funcionROTR(e, 25);
         string s0 = funcionSigma(e,2);
         unsigned int S0 = stoul (s0, nullptr, 2);
         unsigned int H = stoul (h, nullptr, 2);
@@ -395,6 +393,7 @@ string funcionT(int tnum, vector<string> letras, vector<string> klista, vector<s
         bitset <32> bitsfinales ((((( H+(S0)+CHOOSE))+K0)+W0)& 0xFFFFFFFF); 
       
         t1final = bitsfinales.to_string();
+
 
         return t1final;
 
@@ -413,33 +412,49 @@ vector<string> creandoH(vector<string> letras, vector<string> klista, vector<str
     
 
 
-    for (int i = 0; i<8; i++){
+   
 
-        vector<string> listaaux1 (8);
-        vector<string> listaaux2 (8);
-        listaaux1 = combinaciones1(letras,1);
-        vector<string> aux1 = listaaux1;
-        listaaux2 = combinaciones1(listaaux1,2);
-        listainicial = combinaciones2(aux1, klista, wlista,i);
+            vector<string> listaaux1 = letras;
+            vector<string> listaaux2 = desplazarVector(listaaux1);
+            //
+            string t1 = funcionT(1, listaaux1, klista, wlista,0);
+            unsigned int T1 = stoul(t1,nullptr,2);
+            string t2 = funcionT(2, listaaux1, klista, wlista,0);
+            unsigned int T2 = stoul(t2,nullptr,2);
+            bitset<32> bits1 ((T1+T2)& 0xFFFFFFFF);
+            string convertirb1 = bits1.to_string();
+            listaaux2[0] = convertirb1;
+            //
+            string aux = listaaux2[4];
+            unsigned int AUX = stoul(aux,nullptr,2);
+            bitset<32> bits2 ((T1+AUX)& 0xFFFFFFFF);
+            string convertirb2 = bits2.to_string();
+            listaaux2[4] = convertirb2;
+            listainicial = listaaux2;
 
-    }
-    int conta = 8;
-    for (int i = 0; i<7; i++){
-        
-        
-        for (int j = 0; j<8; j++){
-            vector<string> listaaux1 (8);
-            vector<string> listaaux2 (8);
-            listaaux1 = combinaciones1(listainicial,1);
-            vector<string> aux1 = listaaux1;
-            listaaux2 = combinaciones1(listaaux1,2);
-            listainicial = combinaciones2(aux1, klista, wlista,conta);
-            conta++;
+            for(int i=1; i<64;i++){
+
+            vector<string> listaaux1_2 = listainicial;
+            vector<string> listaaux2_2 = desplazarVector(listaaux1_2);
+            //
+            string t1_2 = funcionT(1, listaaux1_2, klista, wlista,i);
+            unsigned int T1_2 = stoul(t1_2,nullptr,2);
+            string t2_2 = funcionT(2, listaaux1_2, klista, wlista,i);
+            unsigned int T2_2 = stoul(t2_2,nullptr,2);
+            bitset<32> bits1_2 ((T1_2+T2_2)& 0xFFFFFFFF);
+            string convertirb1_2 = bits1_2.to_string();
+            listaaux2_2[0] = convertirb1_2;
+            //
+            string aux_2 = listaaux2_2[4];
+            unsigned int AUX_2 = stoul(aux_2,nullptr,2);
+            bitset<32> bits2_2 ((T1_2+AUX_2)& 0xFFFFFFFF);
+            string convertirb2_2 = bits2_2.to_string();
+            listaaux2_2[4] = convertirb2_2;
+            listainicial = listaaux2_2;
+
         }
-        
 
         
-    }
 
     listafinal = listainicial;
 
@@ -447,58 +462,6 @@ vector<string> creandoH(vector<string> letras, vector<string> klista, vector<str
 
 }
 
-vector<string> combinaciones1 (vector<string> lp, int comb){
-
-    vector<string> lista(8);
-    switch (comb)
-    {
-    case 1: {    
-        for(int i=0 ; i<lista.size(); i++){
-
-            lista[i] = lp[i];
-        }
-        return lista;
-    }
-
-    case 2: {
-
-        lista = desplazarVector(lp);
-
-        return lista;
-        
-    }
-
-    default:
-        return lista;
-    }
-}
-
-vector<string> combinaciones2 (vector<string> lp, vector<string> klista, vector<string> wlista,int conta){
-    vector<string> lista(8);
-        for(int i=0 ; i<lista.size(); i++){
-            string t1 = funcionT(1, lp, klista, wlista,conta);
-            unsigned int T1 = stoul(t1,nullptr,2);
-            string t2 = funcionT(2, lp, klista, wlista,conta);
-            unsigned int T2 = stoul(t2,nullptr,2);
-            bitset<32> bits1 ((T1+T2)& 0xFFFFFFFF);
-            string convertirb1 = bits1.to_string();
-            lista[0] = convertirb1;
-            lista[1] = lp[1];
-            lista[2] = lp[2];
-            lista[3] = lp[3];
-            string aux = lp[4];
-            unsigned int AUX = stoul(aux,nullptr,2);
-            bitset<32> bits2 ((T1+AUX)& 0xFFFFFFFF);
-            string convertirb2 = bits2.to_string();
-            lista[4] = convertirb2;
-            lista[5] = lp[5];
-            lista[6] = lp[6];
-            lista[7] = lp[7];
-        }
-    return lista;
-    
-  
-}
 
 
 string SHA256vector(vector<string> principal, vector<string> letras){
@@ -512,7 +475,7 @@ string SHA256vector(vector<string> principal, vector<string> letras){
         unsigned int LISTAP = stoul(listap,nullptr,2);
         string listal = letras[i];
         unsigned int LISTAL = stoul(listal,nullptr,2);
-        bitset<32> bits (LISTAL+LISTAP);
+        bitset<32> bits((LISTAL + LISTAP) & 0xFFFFFFFF);
 
 
         listaSHA256[i] = bits.to_string();
@@ -543,8 +506,8 @@ string SHA256(string palabra){
     vector<string> listaK = constantesHashing();
     vector<string> listaL = hashearvalorInicial();
     vector<string> creacionH= creandoH(listaL,listaK,listaW);
-    string sha256= SHA256vector(listaL, creacionH);
-    string hex =SHA256HEX(sha256);
+    string sha256= SHA256vector(creacionH, listaL);
+    string hex = SHA256HEX(sha256);
 
     return hex;
     
