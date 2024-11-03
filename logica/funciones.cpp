@@ -75,6 +75,9 @@ bool esPrimo (int num) {
 }
 
 vector<string>  hashearvalorInicial(){
+
+
+    //puto
     /*int num =2;
     vector<string> listanum;
     while (listanum.size()<8){
