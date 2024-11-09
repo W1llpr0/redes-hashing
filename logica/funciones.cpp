@@ -1,11 +1,4 @@
-#include <iostream>
-#include <bitset>
-#include <vector>
-#include <cmath> 
-#include <string> 
-#include <map> 
-#include <sstream> 
-using namespace std;
+
 #include "funciones.h"
 
 string convertirASCII( string a ){
@@ -75,22 +68,6 @@ bool esPrimo (int num) {
 }
 
 vector<string>  hashearvalorInicial(){
-    /*int num =2;
-    vector<string> listanum;
-    while (listanum.size()<8){
-        if(esPrimo(num)){
-            double raiznum =sqrt(num);
-            double partedeci = raiznum - floor(raiznum);
-            string numerostring = to_string(partedeci);
-            string numerofinal = numerostring.substr(2);
-            int valoractual = stoi(numerofinal);
-            bitset<32> binario(valoractual);
-            string numeroconver = binario.to_string();
-            listanum.push_back(numeroconver);            
-        }
-        num++;
-    }   
-    return listanum;*/
 
     vector<string> lista(8);
     map<int, string> diccionarioPrimos;
@@ -400,7 +377,7 @@ string funcionT(int tnum, vector<string> letras, vector<string> klista, vector<s
     }
 
     default:
-        return "gabriel se la come";
+        return "numero invalido";
     }
 
 }

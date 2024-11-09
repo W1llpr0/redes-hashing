@@ -1,5 +1,12 @@
 #include <iostream>
+#include <bitset>
 #include <vector>
+#include <string> 
+#include <map> 
+#include <sstream> 
+#include <fstream>
+using namespace std;
+
 
 
 string convertirASCII( string a);
