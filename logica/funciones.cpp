@@ -341,12 +341,8 @@ string funcionT(int tnum, vector<string> letras, vector<string> klista, vector<s
         unsigned int S0 = stoul (s0, nullptr, 2);
         string mayorvalor = mayority(a,b,c);
         unsigned int MAYOR = stoul (mayorvalor, nullptr, 2);
-
         bitset <32> bitsfinales ((S0 + MAYOR) & 0xFFFFFFFF); 
-        t2final = bitsfinales.to_string();
-
-        
-
+        t2final = bitsfinales.to_string(); 
         return t2final;
     }
     
@@ -356,7 +352,6 @@ string funcionT(int tnum, vector<string> letras, vector<string> klista, vector<s
         string f = letras[5];
         string g = letras[6];
         string h = letras[7];
-
         string k0 = klista[cont];
         string w0 = wlista[cont];
         string s0 = funcionSigma(e,2);
@@ -366,12 +361,8 @@ string funcionT(int tnum, vector<string> letras, vector<string> klista, vector<s
         unsigned int W0 = stoul (w0, nullptr, 2);
         string choosevalor = choose(e,f,g);
         unsigned int CHOOSE = stoul (choosevalor, nullptr, 2);
-
         bitset <32> bitsfinales ((((( H+(S0)+CHOOSE))+K0)+W0)& 0xFFFFFFFF); 
-      
         t1final = bitsfinales.to_string();
-
-
         return t1final;
 
     }
@@ -386,14 +377,8 @@ vector<string> creandoH(vector<string> letras, vector<string> klista, vector<str
 
     vector<string> listainicial (8);
     vector<string> listafinal (8);
-    
-
-
-   
-
             vector<string> listaaux1 = letras;
             vector<string> listaaux2 = desplazarVector(listaaux1);
-            //
             string t1 = funcionT(1, listaaux1, klista, wlista,0);
             unsigned int T1 = stoul(t1,nullptr,2);
             string t2 = funcionT(2, listaaux1, klista, wlista,0);
@@ -401,42 +386,31 @@ vector<string> creandoH(vector<string> letras, vector<string> klista, vector<str
             bitset<32> bits1 ((T1+T2)& 0xFFFFFFFF);
             string convertirb1 = bits1.to_string();
             listaaux2[0] = convertirb1;
-            //
             string aux = listaaux2[4];
             unsigned int AUX = stoul(aux,nullptr,2);
             bitset<32> bits2 ((T1+AUX)& 0xFFFFFFFF);
             string convertirb2 = bits2.to_string();
             listaaux2[4] = convertirb2;
             listainicial = listaaux2;
-
             for(int i=1; i<64;i++){
-
-            vector<string> listaaux1_2 = listainicial;
-            vector<string> listaaux2_2 = desplazarVector(listaaux1_2);
-            //
-            string t1_2 = funcionT(1, listaaux1_2, klista, wlista,i);
-            unsigned int T1_2 = stoul(t1_2,nullptr,2);
-            string t2_2 = funcionT(2, listaaux1_2, klista, wlista,i);
-            unsigned int T2_2 = stoul(t2_2,nullptr,2);
-            bitset<32> bits1_2 ((T1_2+T2_2)& 0xFFFFFFFF);
-            string convertirb1_2 = bits1_2.to_string();
-            listaaux2_2[0] = convertirb1_2;
-            //
-            string aux_2 = listaaux2_2[4];
-            unsigned int AUX_2 = stoul(aux_2,nullptr,2);
-            bitset<32> bits2_2 ((T1_2+AUX_2)& 0xFFFFFFFF);
-            string convertirb2_2 = bits2_2.to_string();
-            listaaux2_2[4] = convertirb2_2;
-            listainicial = listaaux2_2;
-
-        }
-
-        
-
+                vector<string> listaaux1_2 = listainicial;
+                vector<string> listaaux2_2 = desplazarVector(listaaux1_2);
+                string t1_2 = funcionT(1, listaaux1_2, klista, wlista,i);
+                unsigned int T1_2 = stoul(t1_2,nullptr,2);
+                string t2_2 = funcionT(2, listaaux1_2, klista, wlista,i);
+                unsigned int T2_2 = stoul(t2_2,nullptr,2);
+                bitset<32> bits1_2 ((T1_2+T2_2)& 0xFFFFFFFF);
+                string convertirb1_2 = bits1_2.to_string();
+                listaaux2_2[0] = convertirb1_2;
+                string aux_2 = listaaux2_2[4];
+                unsigned int AUX_2 = stoul(aux_2,nullptr,2);
+                bitset<32> bits2_2 ((T1_2+AUX_2)& 0xFFFFFFFF);
+                string convertirb2_2 = bits2_2.to_string();
+                listaaux2_2[4] = convertirb2_2;
+                listainicial = listaaux2_2;
+            }
     listafinal = listainicial;
-
     return listafinal;
-
 }
 
 
