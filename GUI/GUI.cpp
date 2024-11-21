@@ -1,48 +1,36 @@
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
 #include <GLFW/glfw3.h>
+#include <iostream>
 
 int main() {
-    // Inicializar GLFW
-    if (!glfwInit()) return -1;
-    GLFWwindow* window = glfwCreateWindow(800, 600, "Dear ImGui Example", NULL, NULL);
-    glfwMakeContextCurrent(window);
-
-    // Inicializar Dear ImGui
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init("#version 130");
-
-    // Bucle principal
-    while (!glfwWindowShouldClose(window)) {
-        glfwPollEvents();
-
-        // Renderizar UI
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
-
-        ImGui::Begin("Ventana Simple");
-        ImGui::Text("Hola, Mundo!");
-        if (ImGui::Button("Presiona aquí")) {
-            // Acción del botón
-        }
-        ImGui::End();
-
-        ImGui::Render();
-        glClear(GL_COLOR_BUFFER_BIT);
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        glfwSwapBuffers(window);
+    if (!glfwInit()) {
+        std::cerr << "Error al inicializar GLFW" << std::endl;
+        return -1;
     }
 
-    // Limpiar recursos
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
+    GLFWwindow* window = glfwCreateWindow(800, 600, "Ejemplo GLFW", NULL, NULL);
+    if (!window) {
+        std::cerr << "Error al crear la ventana GLFW" << std::endl;
+        glfwTerminate();
+        return -1;
+    }
+
+    glfwMakeContextCurrent(window);
+
+    while (!glfwWindowShouldClose(window)) {
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        // Dibujo simple
+        glBegin(GL_TRIANGLES);
+        glVertex2f(-0.5f, -0.5f);
+        glVertex2f(0.5f, -0.5f);
+        glVertex2f(0.0f, 0.5f);
+        glEnd();
+
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+
     glfwDestroyWindow(window);
     glfwTerminate();
-
     return 0;
 }
